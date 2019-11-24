@@ -2,6 +2,8 @@ const express = require('express'),
   bodyParser = require('body-parser'),
   cors = require('cors'),
   massive = require('massive');
+  , ctrl = require('./controller.js');
+
 
 const mainCtrl = require('./mainCtrl');
 
@@ -33,6 +35,22 @@ massive(config.connectionString).then(db => {
 });
 
 // ===== Build enpoints below ============
+app.get('api/users', ctrl.gettAllUsers)
+app.get('api/vehicles', ctrl.getAllVehicles)
+app.get('/api/user/:userId/vehiclecount', ctrl.getCountCarsByID)
+app.get('/api/user/:userId/vehicle', ctrl.getCarsByUserID)
+app.get('api/vehicle', ctrl.getQuery)
+// app.get('api/vehicle',)
+app.get('api/newervehiclebyyear', ctrl.getVehiclesByYear)
+
+app.put('/api/vehicle/:vehicleId/user/:userId', ctrl.UpdateVehicleOwner)
+
+app.post('api/users', ctrl.addUser)
+app.post('api/vehicles', ctrl.addVehicle)
+
+app.delete('/api/user/:userId/vehicle/:vehicleId', ctrl.DeleteOwnership)
+app.delete('/api/vehicle/:vehicleId', ctrl.DeleteVehicleByID)
+
 
 // ===== Do not change port ===============
 const port = 3000;
